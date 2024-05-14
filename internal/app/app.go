@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -23,14 +24,16 @@ func Run() {
 		log.Fatalf("[App] could not register routes: %v", err)
 	}
 
-	fullAddr := "localhost:8080"
+	appCfg := config.GetAppConfig()
+	fullAddr := fmt.Sprintf("%s:%s", appCfg.ServerAddr, appCfg.ServerPort)
+
 	httpServer := &http.Server{
 		Addr:    fullAddr,
 		Handler: handler,
 	}
-	log.Printf("[App] Server is running at http://%s\n", fullAddr)
 
 	// Run the server
+	log.Printf("[App] Server is running at http://%s\n", fullAddr)
 	err = httpServer.ListenAndServe()
 	if err != nil && err != http.ErrServerClosed {
 		log.Fatal(err)
