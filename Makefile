@@ -8,7 +8,7 @@ GOMOD=$(GOCMD) mod
 BINARY_NAME=api-gateway
 
 # Path names
-ENTRY_PATH=./cmd/main.go
+ENTRY_PATH=./cmd/api-gateway/main.go
 OUT_PATH=./bin/
 
 # Source files

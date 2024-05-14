@@ -20,10 +20,10 @@ func LoadConfig() (*Config, error) {
 
 	absConfigPath, err := filepath.Abs(*configPath)
 	if err != nil {
-		log.Fatalf("failed to get absolute path for config file: %v", err)
+		log.Fatalf("[Config] failed to get absolute path for config file: %v", err)
 	}
 
-	fmt.Println("Using config file:", absConfigPath)
+	log.Print("[Config] Using config file:", absConfigPath)
 
 	if _, err := os.Stat(absConfigPath); os.IsNotExist(err) {
 		return nil, fmt.Errorf("config file does not exist: %s", absConfigPath)
