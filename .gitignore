@@ -1,0 +1,54 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Dependency directories (remove the comment below if you are not using Go modules)
+#vendor/
+
+# Object files, archives, etc.
+*.o
+*.a
+*.obj
+*.lo
+*.la
+*.slo
+*.loT
+*.old
+*.new
+*.gcno
+*.gcda
+*.gcov
+
+# Precompiled Git hooks
+.pre-commit-config.yaml
+
+# Folders related to Go build
+bin/
+pkg/
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Project-specific environment variables
+.env
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
