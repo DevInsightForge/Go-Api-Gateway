@@ -10,9 +10,9 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-type Mapping struct{ Prefix, Server string }
+type ServerMap struct{ Prefix, Server string }
 
-type Config struct{ Mappings []Mapping }
+type Config struct{ Mappings []ServerMap }
 
 func LoadConfig() (*Config, error) {
 	configPath := flag.String("config", "config.yaml", "path to config file")

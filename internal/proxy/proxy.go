@@ -1,6 +1,7 @@
 package proxy
 
 import (
+	"api-gateway/internal/config"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
@@ -8,35 +9,28 @@ import (
 )
 
 type Proxy struct {
+	Prefix string
 	Target *url.URL
 	Proxy  *httputil.ReverseProxy
-	Prefix string
 }
 
-func NewProxy(target, prefix string) (*Proxy, error) {
-	targetURL, err := url.Parse(target)
+func NewProxy(serverMap config.ServerMap) (*Proxy, error) {
+	parsedUrl, err := url.Parse(serverMap.Server)
 	if err != nil {
 		return nil, err
 	}
 
 	return &Proxy{
-		Target: targetURL,
-		Proxy:  httputil.NewSingleHostReverseProxy(targetURL),
-		Prefix: prefix,
+		Prefix: serverMap.Prefix,
+		Target: parsedUrl,
+		Proxy:  httputil.NewSingleHostReverseProxy(parsedUrl),
 	}, nil
 }
 
 func (p *Proxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	if strings.HasPrefix(r.URL.Path, p.Prefix) {
-		r.URL.Path = strings.TrimPrefix(r.URL.Path, p.Prefix)
-	} else if p.Prefix == "/" {
-		// Special case for handling the root path "/"
-		r.URL.Path = strings.TrimPrefix(r.URL.Path, p.Prefix)
-	} else {
-		http.NotFound(w, r)
-		return
-	}
-
+	r.URL.Path = strings.TrimPrefix(r.URL.Path, "/"+p.Prefix)
+	r.URL.Scheme = p.Target.Scheme
+	r.Header.Set("X-Forwarded-Host", r.Host)
 	r.Host = p.Target.Host
 
 	p.Proxy.ServeHTTP(w, r)
